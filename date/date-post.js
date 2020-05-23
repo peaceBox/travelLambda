@@ -16,17 +16,19 @@ exports.main = async (event) => {
     TableName: 'travelTable',
     Key: {
       travelId: travelId,
-      UUID: uuidv4().split('-').join('')
+      UUID: 'date-post' // uuidv4().split('-').join('')
     },
     ExpressionAttributeNames: {
       '#s': 'startDate',
-      '#f': 'finishDate'
+      '#f': 'finishDate',
+      '#d': 'dataType'
     },
     ExpressionAttributeValues: {
       ':startDate': startDate,
-      ':finishDate': finishDate
+      ':finishDate': finishDate,
+      ':dataType': 'date'
     },
-    UpdateExpression: 'SET #s = :startDate, #f = :finishDate'
+    UpdateExpression: 'SET #s = :startDate, #f = :finishDate, #d = :dataType'
   };
   await new Promise((resolve) => {
     dynamoDocument.update(param, (err, data) => {
