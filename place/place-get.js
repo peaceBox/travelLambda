@@ -36,11 +36,9 @@ exports.main = async (event) => {
   const items = promise.Items;
   const arr = [];
   for (const property in items) {
-    if ((items[property]).hasOwnProperty('placeId')) {
-      arr.push({
-        placeId: items[property].startDate
-      });
-    }
+    arr.push({
+      placeId: items[property].dataValue
+    });
   }
   const response = {
     statusCode: 200,
