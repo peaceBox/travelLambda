@@ -17,7 +17,7 @@ exports.main = async (event) => {
     TableName: 'travelTable',
     Key: {
       travelId: travelId,
-      UUID: UUID
+      UUID: 'groupId'
     },
     ExpressionAttributeNames: {
       '#t': 'dataType',
