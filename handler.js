@@ -47,6 +47,19 @@ module.exports.hello = async event => {
           break;
       }
       break;
+    case '/food':
+      switch (method) {
+        case 'DELETE':
+          res = require('./food/food-delete').main(event);
+          break;
+        case 'GET':
+          res = require('./food/food-get').main(event);
+          break;
+        case 'POST':
+          res = require('./food/food-post').main(event);
+          break;
+      }
+      break;
     case '/rate':
       switch (method) {
         case 'POST':
