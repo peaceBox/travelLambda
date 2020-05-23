@@ -41,6 +41,7 @@ exports.main = async (event) => {
     arr.push({
       dataTurn: items[property].dataTurn,
       placeId: items[property].dataValue,
+      UUID: items[property].UUID,
       date: items[property].date
     });
   }

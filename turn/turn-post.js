@@ -7,68 +7,46 @@ const dynamoDocument = new AWS.DynamoDB.DocumentClient();
 
 exports.main = async (event) => {
   const data = JSON.parse(event.body);
-
-  /*for (const property in items) {
-    arr.push({
-      dataTurn: items[property].dataTurn,
-      placeId: items[property].dataValue,
-      date: items[property].date
-    });
-  }*/
-
   const travelId = data.travelId;
-  const placeId = data.placeId;
+  const placeData = data.placeData;
 
+  for (const property in placeData) {
+    const placeId = placeData[property].placeId;
+    const turn = placeData[property].turn;
+    const date = placeData[property].date;
+    const UUID = placeData[property].UUID;
 
-
-  /*
-  const queryParam = {
-    TableName: 'travelTable',
-    IndexName: 'travelId-dataType-index',
-    KeyConditionExpression: '#k = :val AND #d = :dataType',
-    ExpressionAttributeValues: {
-      ':val': travelId,
-      ':dataType': 'place'
-    },
-    ExpressionAttributeNames: {
-      '#k': 'travelId',
-      '#d': 'dataType',
-    }
-  };
-  const promise = await new Promise((resolve, reject) => {
-    dynamoDocument.query(queryParam, (err, data) => {
-      if (err) {
-        console.log(err);
-        throw new Error(err);
-      } else {
-        resolve(data);
-      }
+    const param = {
+      TableName: 'travelTable',
+      Key: {
+        travelId: travelId,
+        UUID: UUID
+      },
+      ExpressionAttributeNames: {
+        '#p': 'placeId',
+        '#t': 'turn',
+        '#d': 'date',
+        '#e': 'dataType',
+      },
+      ExpressionAttributeValues: {
+        ':placeId': placeId,
+        ':turn': turn,
+        ':date': date,
+        ':dataType': 'place',
+      },
+      UpdateExpression: 'SET #p = :placeId, #t = :turn, #d = :date, #e = :dataType'
+    };
+    await new Promise((resolve) => {
+      dynamoDocument.update(param, (err, data) => {
+        if (err) {
+          console.log(err);
+          throw new Error(err);
+        } else {
+          resolve(data);
+        }
+      });
     });
-  });
-  const length = promise.Items.length;*/
-
-  const UUID = uuidv4().split('-').join('');
-
-  const param = {
-    TableName: 'travelTable',
-    Item: {
-      travelId: travelId,
-      UUID: UUID,
-      dataType: 'place',
-      dataValue: placeId,
-      // dataTurn: length + 1
-    }
-  };
-  await new Promise((resolve) => {
-    dynamoDocument.put(param, (err, data) => {
-      if (err) {
-        console.log(err);
-        throw new Error(err);
-      } else {
-        resolve(data);
-      }
-    });
-  });
+  }
 
   const response = {
     statusCode: 200,
