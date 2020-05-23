@@ -6,10 +6,9 @@ const AWS = require('aws-sdk');
 const dynamoDocument = new AWS.DynamoDB.DocumentClient();
 
 exports.main = async (event) => {
-  const data = JSON.parse(event.body);
 
-  const travelId = data.travelId;
-  const placeId = data.placeId;
+  const params = event.queryStringParameters;
+  const travelId = params.travelId;
 
   const queryParam = {
     TableName: 'travelTable',
