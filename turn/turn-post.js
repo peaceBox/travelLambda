@@ -23,18 +23,18 @@ exports.main = async (event) => {
         UUID: UUID
       },
       ExpressionAttributeNames: {
-        '#p': 'placeId',
-        '#t': 'turn',
+        '#v': 'dataValue',
+        '#t': 'dataTurn',
         '#d': 'date',
         '#e': 'dataType',
       },
       ExpressionAttributeValues: {
-        ':placeId': placeId,
-        ':turn': turn,
+        ':dataValue': placeId,
+        ':dataTurn': turn,
         ':date': date,
         ':dataType': 'place',
       },
-      UpdateExpression: 'SET #p = :placeId, #t = :turn, #d = :date, #e = :dataType'
+      UpdateExpression: 'SET #v = :dataValue, #t = :dataTurn, #d = :date, #e = :dataType'
     };
     await new Promise((resolve) => {
       dynamoDocument.update(param, (err, data) => {
