@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - development
+      - master
 
 name: Auto Deploy to AWS Lambda
 
