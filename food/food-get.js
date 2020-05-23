@@ -7,6 +7,8 @@ const dynamoDocument = new AWS.DynamoDB.DocumentClient();
 
 exports.main = async (event) => {
 
+  console.log('food-get');
+
   const params = event.queryStringParameters;
   const travelId = params.travelId;
 
@@ -37,7 +39,10 @@ exports.main = async (event) => {
   const arr = [];
   for (const property in items) {
     arr.push({
-      placeId: items[property].dataValue
+      dataTurn: items[property].dataTurn,
+      placeId: items[property].dataValue,
+      UUID: items[property].UUID,
+      date: items[property].date
     });
   }
   const response = {
