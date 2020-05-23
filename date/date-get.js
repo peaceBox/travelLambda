@@ -7,11 +7,9 @@ exports.main = async (event) => {
 
   const param = {
     TableName: 'travelTable',
-    IndexName: 'dataValue-index',
-    KeyConditionExpression: '#k = :val, #d = :dataValue',
+    KeyConditionExpression: '#k = :val',
     ExpressionAttributeValues: {
-      ':val': travelId,
-      //":dataValue": 
+      ':val': travelId
     },
     ExpressionAttributeNames: {
       '#k': 'travelId'
@@ -28,5 +26,6 @@ exports.main = async (event) => {
     });
   });
 
+  console.log(param);
 
 };
