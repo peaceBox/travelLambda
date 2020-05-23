@@ -11,9 +11,12 @@ exports.main = async (event) => {
     .get(
       `https://maps.googleapis.com/maps/api/place/details/json?key=${APIKey}&&place_id=${placeId}`
     )
-    .then((res) => {
-      console.log(res.data.result);
+    .catch((err) => {
+      console.log(err);
+      throw new Error(err);
     });
+
+  console.log(res);
 
   const response = {
     statusCode: 200,
