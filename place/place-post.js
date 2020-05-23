@@ -13,14 +13,15 @@ exports.main = async (event) => {
 
   const queryParam = {
     TableName: 'travelTable',
-    KeyConditionExpression: '#k = :val, #d = :dataType',
+    IndexName: 'travelId-dataType-index',
+    KeyConditionExpression: '#k = :val AND #d = :dataType',
     ExpressionAttributeValues: {
       ':val': travelId,
       ':dataType': 'place'
     },
     ExpressionAttributeNames: {
       '#k': 'travelId',
-      '#k': 'dataType',
+      '#d': 'dataType',
     }
   };
   const promise = await new Promise((resolve, reject) => {
@@ -33,36 +34,36 @@ exports.main = async (event) => {
       }
     });
   });
-  console.log(promise.Items);
-  /*
-    const UUID = uuidv4().split('-').join('');
+  const length = promise.Items.length;
 
-    const param = {
-      TableName: 'travelTable',
-      Item: {
-        travelId: travelId,
-        UUID: UUID,
-        dataType: 'place',
-        dataValue: placeId,
-        dataTurn: dataTurn
+  const UUID = uuidv4().split('-').join('');
+
+  const param = {
+    TableName: 'travelTable',
+    Item: {
+      travelId: travelId,
+      UUID: UUID,
+      dataType: 'place',
+      dataValue: placeId,
+      dataTurn: length + 1
+    }
+  };
+  await new Promise((resolve) => {
+    dynamoDocument.put(param, (err, data) => {
+      if (err) {
+        console.log(err);
+        throw new Error(err);
+      } else {
+        resolve(data);
       }
-    };
-    await new Promise((resolve) => {
-      dynamoDocument.put(param, (err, data) => {
-        if (err) {
-          console.log(err);
-          throw new Error(err);
-        } else {
-          resolve(data);
-        }
-      });
-    });*/
+    });
+  });
 
   const response = {
     statusCode: 200,
     headers: {
-      'Location': 'https://travel.sugokunaritai.dev',
-      'Access-Control-Allow-Origin': 'https://travel.sugokunaritai.dev',
+      // 'Location': 'https://travel.sugokunaritai.dev',
+      'Access-Control-Allow-Origin': 'http://localhost:8080',
       'Access-Control-Allow-Credentials': true
     },
     body: ''

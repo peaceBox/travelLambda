@@ -64,6 +64,13 @@ module.exports.hello = async event => {
           break;
       }
       break;
+    case '/map/details':
+      switch (method) {
+        case 'GET':
+          res = require('./map/details-get').main(event);
+          break;
+      }
+      break;
   }
 
   return res;
