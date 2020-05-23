@@ -1,3 +1,5 @@
+const uuidv4 = require('uuid/v4');
+
 const AWS = require('aws-sdk');
 const dynamoDocument = new AWS.DynamoDB.DocumentClient();
 
@@ -11,19 +13,18 @@ exports.main = async (event) => {
   const param = {
     TableName: 'travelTable',
     Key: {
-      travelId: travelId
+      travelId: travelId,
+      UUID: uuidv4().split('-').join('')
     },
     ExpressionAttributeNames: {
-      '#t': 'travelId',
       '#s': 'startDate',
       '#f': 'finishDate'
     },
     ExpressionAttributeValues: {
-      ':travelId': travelId,
       ':startDate': startDate,
       ':finishDate': finishDate
     },
-    UpdateExpression: 'SET #t = :travelId, #s = :startDate, #f = :finishDate'
+    UpdateExpression: 'SET #s = :startDate, #f = :finishDate'
   };
   await new Promise((resolve) => {
     dynamoDocument.update(param, (err, data) => {

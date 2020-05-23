@@ -11,7 +11,7 @@ exports.main = async (event) => {
     KeyConditionExpression: '#k = :val, #d = :dataValue',
     ExpressionAttributeValues: {
       ':val': travelId,
-
+      //":dataValue": 
     },
     ExpressionAttributeNames: {
       '#k': 'travelId'
