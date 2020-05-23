@@ -12,7 +12,7 @@ exports.main = async (event) => {
 
   const res = await axios
     .get(
-      `https://maps.googleapis.com/maps/api/place/details/json?key=${APIKey}&place_id=${placeId}`
+      `https://maps.googleapis.com/maps/api/place/details/json?key=${APIKey}&placeid=${placeId}`
     )
     .catch((err) => {
       console.log(err);
@@ -28,7 +28,7 @@ exports.main = async (event) => {
       'Access-Control-Allow-Origin': 'https://travel.sugokunaritai.dev',
       'Access-Control-Allow-Credentials': true
     },
-    body: ''
+    body: res.data
   };
   return response;
 
