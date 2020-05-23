@@ -28,7 +28,7 @@ exports.main = async (event) => {
       'Access-Control-Allow-Origin': 'https://travel.sugokunaritai.dev',
       'Access-Control-Allow-Credentials': true
     },
-    body: res.data
+    body: JSON.stringify(res.data)
   };
   return response;
 
