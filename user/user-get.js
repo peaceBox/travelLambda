@@ -1,28 +1,19 @@
-const {
-  v4: uuidv4
-} = require('uuid');
-
 const AWS = require('aws-sdk');
 const dynamoDocument = new AWS.DynamoDB.DocumentClient();
 
 exports.main = async (event) => {
-
-  console.log('place-get');
-
   const params = event.queryStringParameters;
-  const travelId = params.travelId;
+  const userId = params.userId;
 
   const queryParam = {
     TableName: 'travelTable',
-    IndexName: 'travelId-dataType-index',
-    KeyConditionExpression: '#k = :val AND #d = :dataType',
+    IndexName: 'dataValue-index',
+    KeyConditionExpression: '#k = :val',
     ExpressionAttributeValues: {
-      ':val': travelId,
-      ':dataType': 'place'
+      ':val': userId
     },
     ExpressionAttributeNames: {
-      '#k': 'travelId',
-      '#d': 'dataType',
+      '#k': 'dataValue'
     }
   };
   const promise = await new Promise((resolve, reject) => {
@@ -35,23 +26,24 @@ exports.main = async (event) => {
       }
     });
   });
+
   const items = promise.Items;
   const arr = [];
   for (const property in items) {
     arr.push({
-      dataTurn: items[property].dataTurn,
-      placeId: items[property].dataValue,
-      date: items[property].date
+      travelId: items[property].travelId
     });
   }
+
   const response = {
     statusCode: 200,
     headers: {
-      // 'Location': 'https://travel.sugokunaritai.dev',
-      'Access-Control-Allow-Origin': 'http://localhost:8080',
+      'Location': 'https://travel.sugokunaritai.dev',
+      'Access-Control-Allow-Origin': 'https://travel.sugokunaritai.dev',
       'Access-Control-Allow-Credentials': true
     },
     body: JSON.stringify(arr)
   };
   return response;
+
 };

@@ -2,8 +2,11 @@
 
 module.exports.hello = async event => {
 
+  console.log(event);
+
   const path = event.path;
   const method = event.httpMethod;
+  console.log(path, method);
 
   let res;
 
@@ -81,6 +84,16 @@ module.exports.hello = async event => {
       switch (method) {
         case 'GET':
           res = require('./map/details-get').main(event);
+          break;
+      }
+      break;
+    case '/user':
+      switch (method) {
+        case 'POST':
+          res = require('./user/user-post').main(event);
+          break;
+        case 'GET':
+          res = require('./user/user-get').main(event);
           break;
       }
       break;

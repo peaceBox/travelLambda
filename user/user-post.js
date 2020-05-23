@@ -9,44 +9,15 @@ exports.main = async (event) => {
   const data = JSON.parse(event.body);
 
   const travelId = data.travelId;
-  const placeId = data.placeId;
-
-  /*
-  const queryParam = {
-    TableName: 'travelTable',
-    IndexName: 'travelId-dataType-index',
-    KeyConditionExpression: '#k = :val AND #d = :dataType',
-    ExpressionAttributeValues: {
-      ':val': travelId,
-      ':dataType': 'place'
-    },
-    ExpressionAttributeNames: {
-      '#k': 'travelId',
-      '#d': 'dataType',
-    }
-  };
-  const promise = await new Promise((resolve, reject) => {
-    dynamoDocument.query(queryParam, (err, data) => {
-      if (err) {
-        console.log(err);
-        throw new Error(err);
-      } else {
-        resolve(data);
-      }
-    });
-  });
-  const length = promise.Items.length;*/
-
-  const UUID = uuidv4().split('-').join('');
+  const userId = data.userId;
 
   const param = {
     TableName: 'travelTable',
     Item: {
       travelId: travelId,
-      UUID: UUID,
-      dataType: 'place',
-      dataValue: placeId,
-      // dataTurn: length + 1
+      UUID: userId,
+      dataType: 'userId',
+      dataValue: userId
     }
   };
   await new Promise((resolve) => {

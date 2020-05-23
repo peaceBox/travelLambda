@@ -6,12 +6,22 @@ const AWS = require('aws-sdk');
 const dynamoDocument = new AWS.DynamoDB.DocumentClient();
 
 exports.main = async (event) => {
+  const data = JSON.parse(event.body);
 
-  console.log('place-get');
+  /*for (const property in items) {
+    arr.push({
+      dataTurn: items[property].dataTurn,
+      placeId: items[property].dataValue,
+      date: items[property].date
+    });
+  }*/
 
-  const params = event.queryStringParameters;
-  const travelId = params.travelId;
+  const travelId = data.travelId;
+  const placeId = data.placeId;
 
+
+
+  /*
   const queryParam = {
     TableName: 'travelTable',
     IndexName: 'travelId-dataType-index',
@@ -35,15 +45,31 @@ exports.main = async (event) => {
       }
     });
   });
-  const items = promise.Items;
-  const arr = [];
-  for (const property in items) {
-    arr.push({
-      dataTurn: items[property].dataTurn,
-      placeId: items[property].dataValue,
-      date: items[property].date
+  const length = promise.Items.length;*/
+
+  const UUID = uuidv4().split('-').join('');
+
+  const param = {
+    TableName: 'travelTable',
+    Item: {
+      travelId: travelId,
+      UUID: UUID,
+      dataType: 'place',
+      dataValue: placeId,
+      // dataTurn: length + 1
+    }
+  };
+  await new Promise((resolve) => {
+    dynamoDocument.put(param, (err, data) => {
+      if (err) {
+        console.log(err);
+        throw new Error(err);
+      } else {
+        resolve(data);
+      }
     });
-  }
+  });
+
   const response = {
     statusCode: 200,
     headers: {
@@ -51,7 +77,7 @@ exports.main = async (event) => {
       'Access-Control-Allow-Origin': 'http://localhost:8080',
       'Access-Control-Allow-Credentials': true
     },
-    body: JSON.stringify(arr)
+    body: ''
   };
   return response;
 };
