@@ -7,16 +7,19 @@ exports.main = async (event) => {
   const placeId = params.placeId;
 
   const APIKey = process.env.MAP_API_KEY;
+
+  console.log(placeId, APIKey);
+
   const res = await axios
     .get(
-      `https://maps.googleapis.com/maps/api/place/details/json?key=${APIKey}&&place_id=${placeId}`
+      `https://maps.googleapis.com/maps/api/place/details/json?key=${APIKey}&place_id=${placeId}`
     )
     .catch((err) => {
       console.log(err);
       throw new Error(err);
     });
 
-  console.log(res);
+  console.log(res.data);
 
   const response = {
     statusCode: 200,
@@ -25,10 +28,7 @@ exports.main = async (event) => {
       'Access-Control-Allow-Origin': 'https://travel.sugokunaritai.dev',
       'Access-Control-Allow-Credentials': true
     },
-    body: JSON.stringify({
-      startDate: startDate,
-      finishDate: finishDate
-    })
+    body: ''
   };
   return response;
 
