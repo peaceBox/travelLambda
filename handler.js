@@ -97,6 +97,13 @@ module.exports.hello = async event => {
           break;
       }
       break;
+    case '/turn':
+      switch (method) {
+        case 'POST':
+          res = require('./turn/turn-post').main(event);
+          break;
+      }
+      break;
   }
 
   return res;
