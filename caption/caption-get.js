@@ -35,7 +35,13 @@ exports.main = async (event) => {
       }
     });
   });
-  const caption = promise.Items[0].dataValue;
+  let caption;
+  try {
+    caption = promise.Items[0].dataValue;
+  } catch (e) {
+    console.log(e);
+    caption = '';
+  }
   const response = {
     statusCode: 200,
     headers: {
