@@ -40,7 +40,7 @@ exports.main = async (event) => {
     statusCode: 200,
     headers: {
       // 'Location': 'https://travel.sugokunaritai.dev',
-      'Access-Control-Allow-Origin': 'http://localhost:8080',
+      'Access-Control-Allow-Origin': 'https://travel.sugokunaritai.dev',
       'Access-Control-Allow-Credentials': true
     },
     body: JSON.stringify(caption)
