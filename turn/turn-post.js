@@ -7,6 +7,7 @@ const dynamoDocument = new AWS.DynamoDB.DocumentClient();
 
 exports.main = async (event) => {
   const data = JSON.parse(event.body);
+  console.log(data);
   const travelId = data.travelId;
   const placeData = data.placeData;
 
