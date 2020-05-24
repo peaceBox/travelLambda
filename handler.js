@@ -104,6 +104,16 @@ module.exports.hello = async event => {
           break;
       }
       break;
+    case '/caption':
+      switch (method) {
+        case 'POST':
+          res = require('./caption/caption-post').main(event);
+          break;
+        case 'GET':
+          res = require('./caption/caption-get').main(event);
+          break;
+      }
+      break;
   }
 
   return res;
